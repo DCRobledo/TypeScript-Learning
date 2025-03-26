@@ -1,48 +1,41 @@
-﻿const menu = [
-    { name: "Margherita", price: 8 }, 
-    { name: "Pepperoni", price: 10 }, 
-    { name: "Hawaiian", price: 10 }, 
-    { name: "Veggie", price: 9 }
-]
-
-let cashInRegister = 100
-
-const nextOrderID = 1
-const orderQueue = []
-
+var menu = [
+    { id: 1, name: "Margherita", price: 8 },
+    { id: 2, name: "Pepperoni", price: 10 },
+    { id: 3, name: "Hawaiian", price: 10 },
+    { id: 4, name: "Veggie", price: 9 }
+];
+var cashInRegister = 100;
+var nextOrderID = 1;
+var orderQueue = [];
 function addNewPizza(newPizza) {
-    menu.push(newPizza)
+    menu.push(newPizza);
 }
-
 function placeOrder(pizzaNameToOrder) {
-    let targetPizza = menu.find(pizzaObj => pizzaObj.name === pizzaNameToOrder);
-    if (targetPizza) {
-        cashInRegister += targetPizza.price;
+    var targetPizza = menu.find(function (pizzaObj) { return pizzaObj.name === pizzaNameToOrder; });
+    if (!targetPizza) {
+        console.error("Pizza ".concat(pizzaNameToOrder, " not found"));
+        return;
     }
-    
-    let orderPizzaObj = { id: nextOrderID, pizza: targetPizza, status: "ordered" }
+    cashInRegister += targetPizza.price;
+    var orderPizzaObj = { id: nextOrderID, pizza: targetPizza, status: "ordered" };
     orderQueue.push(orderPizzaObj);
     nextOrderID += 1;
-    
     return orderPizzaObj;
 }
-
 function completeOrder(orderID) {
-    let targetOrder = orderQueue[orderID];
-    
-    if (targetOrder) {
-        targetOrder.status = "complete";
-        return targetOrder
+    var targetOrder = orderQueue[orderID];
+    if (!targetOrder) {
+        console.error("Order ".concat(orderID, " not found"));
+        return;
     }
+    targetOrder.status = "completed";
+    return targetOrder;
 }
-
-addNewPizza({ name: "Chicken Bacon Ranch", cost: 12 })
-addNewPizza({ name: "BBQ Chicken", cost: 12 })
-addNewPizza({ name: "Spicy Sausage", cost: 11 })
-
-placeOrder("Chicken Bacon Ranch")
-completeOrder("1")
-
-console.log("Menu:", menu)
-console.log("Cash in register:", cashInRegister)
-console.log("Order queue:", orderQueue)
+addNewPizza({ id: 4, name: "Chicken Bacon Ranch", price: 12 });
+addNewPizza({ id: 5, name: "BBQ Chicken", price: 12 });
+addNewPizza({ id: 6, name: "Spicy Sausage", price: 11 });
+placeOrder("Chicken Bacon Ranch");
+completeOrder(1);
+console.log("Menu:", menu);
+console.log("Cash in register:", cashInRegister);
+console.log("Order queue:", orderQueue);
